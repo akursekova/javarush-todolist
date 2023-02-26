@@ -62,7 +62,7 @@ public class Task {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "task_tag",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
