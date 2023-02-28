@@ -2,6 +2,7 @@ package dev.javarush.todolist.services;
 
 import dev.javarush.todolist.command.UserCommand;
 import dev.javarush.todolist.dto.UserDTO;
+import dev.javarush.todolist.exceptions.UserNotFoundException;
 
 public interface UserService {
 
@@ -9,5 +10,5 @@ public interface UserService {
 
     UserDTO getUserById(Long id);
 
-    UserDTO getUserByUsername(String username);
+    UserDTO getUserByUsername(String username) throws UserNotFoundException;
 }

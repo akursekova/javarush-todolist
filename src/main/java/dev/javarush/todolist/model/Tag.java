@@ -19,6 +19,7 @@ public class Tag {
     @Id
     @ToString.Exclude
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "tag_id")
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)

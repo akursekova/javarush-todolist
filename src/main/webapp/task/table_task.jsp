@@ -48,9 +48,9 @@
                     </c:forEach>
                 </td>
                 <td>
-                    <a href="editTask?id=${task.id}&action=EDIT">Edit</a>
-                        <%--                    <a href="task?id=${task.id}&action=EDIT">Edit</a>--%>
-                    <a href="task?id=${task.id}&action=DELETE">Delete</a>
+                        <%--                    <a href="editTask?id=${task.id}&action=EDIT">Edit</a>--%>
+                    <a href="task?id=${task.id}&action=edit">Edit</a>
+                    <a href="task?id=${task.id}&action=delete">Delete</a>
                 </td>
             </tr>
         </c:forEach>
@@ -59,7 +59,7 @@
     <br>
     <div class="row">
         <div class="col-12">
-            <p>Press to task name for get more information</p>
+            <p>Click on to task name to get more information</p>
         </div>
     </div>
     <br>

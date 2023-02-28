@@ -17,6 +17,7 @@
 <div class="container">
     <br>
     <h1>New task</h1>
+    <h1></h1>
     <br>
     <form action="new-task" method="post">
         <div class="mb-3">

@@ -10,7 +10,10 @@ import dev.javarush.todolist.services.TagService;
 import dev.javarush.todolist.services.TaskCommentService;
 import dev.javarush.todolist.services.TaskService;
 import dev.javarush.todolist.services.UserService;
+import dev.javarush.todolist.servlets.tag.TagServlet;
 import lombok.SneakyThrows;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -26,9 +29,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static dev.javarush.todolist.consts.WebConstants.*;
+import static dev.javarush.todolist.consts.WebConstants.USER_SERVICE;
 
-@WebServlet(name = "EditTaskServlet", value = "/editTask")
-public class EditTaskServlet extends HttpServlet {
+@WebServlet(name = "taskServlet", value = "/task")
+public class TaskServlet extends HttpServlet {
+
+    private final Logger logger = LogManager.getLogger(TaskServlet.class);
 
     private TaskService taskService;
     private TaskCommentService taskCommentService;
@@ -46,50 +52,40 @@ public class EditTaskServlet extends HttpServlet {
         userService = (UserService) context.getAttribute(USER_SERVICE);
     }
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("doGet started. id = " + req.getParameter("id"));
+
+
         Long id = Long.parseLong(req.getParameter("id"));
         TaskDTO task = taskService.getTaskById(id);
+
         addAttributes(req);
         req.setAttribute("task", task);
 
 
-        if (req.getParameter("action") != null) {
-            WebMethodsType method = WebMethodsType.valueOf(req.getParameter("action"));
-            //editAction(req, resp, id, method);
-            //TEST common JSP
-            //req.getRequestDispatcher("/task/edit_task.jsp").forward(req, resp);
+        logger.info("action = " + req.getParameter("action"));
 
-            req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
+
+        if (req.getParameter("action") != null) {
+            WebMethodsType method = WebMethodsType.valueOf(req.getParameter("action").toUpperCase());
+
+            if (method.equals(WebMethodsType.DELETE)) {
+                deleteAction(req, resp, id, method);
+                return;
+            }
+            if (method.equals(WebMethodsType.EDIT)) {
+                req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
+                return;
+            }
+        } else {
+            task.setComments(taskCommentService.findCommentsByTaskId(id));
+            req.setAttribute("task", task);
         }
-//        else {
-//            task.setComments(taskCommentService.findCommentsByTaskId(id));
-//            req.setAttribute("task", task);
-//        }
         req.getRequestDispatcher("/task/info_task.jsp").forward(req, resp);
     }
 
-    private void editAction(HttpServletRequest req, HttpServletResponse resp, Long id, WebMethodsType method) throws ServletException, IOException {
-        if (method == WebMethodsType.EDIT) {
-            System.out.println("EDIT started");
-            System.out.println("ID = " + id);
-
-            /*
-            req.getParameter("taskName"))
-                .description(req.getParameter("taskDescription"))
-                .status(TaskStatus.getByStatus(req.getParameter("taskStatus")))
-                .priority(TaskPriority.getByPriority(req.getParameter("taskPriority")))
-                .userId(userService.getUserByUsername(username).getId())
-                .hours(Integer.parseInt(req.getParameter("taskHours")))
-                .text(req.getParameter("taskText")
-             */
-
-
-            req.getRequestDispatcher("/task/edit_task.jsp").forward(req, resp);
-        }
-        //todo edit action: for edit I need to create new servlet
-        //todo rename this method, because here can be nt only delete but also edit
-    }
 
 
     @SneakyThrows
@@ -99,7 +95,7 @@ public class EditTaskServlet extends HttpServlet {
         TaskDTO task = taskService.getTaskById(currentTaskId);
         String username = "malina"; //forced username
 
-        System.out.println("CURRENT TASK = " + task.toString());
+        logger.info("current task = " + task.toString());
 
 
         TaskCommand updatedTaskCommand = buildTaskCommand(req, username);
@@ -108,7 +104,19 @@ public class EditTaskServlet extends HttpServlet {
         // если я могу засетить айди в таскКомманд
         // и потом замапить эту сущность на таску
         resp.sendRedirect("/javarush_todolist_war_exploded/table-task");
+    }
 
+    private void deleteAction(HttpServletRequest req, HttpServletResponse resp, Long id, WebMethodsType method) throws ServletException, IOException {
+        if (method == WebMethodsType.DELETE) {
+            taskService.deleteTaskById(id);
+            resp.sendRedirect("/javarush_todolist_war_exploded/table-task");
+        }
+    }
+
+    private void addAttributes(HttpServletRequest req) {
+        req.setAttribute(STATUSES, taskService.getAllStatuses());
+        req.setAttribute(PRIORITIES, taskService.getAllPriorities());
+        req.setAttribute(TAGS, tagService.getAll());
     }
 
     private TaskCommand buildTaskCommand(HttpServletRequest req, String username) throws UserNotFoundException {
@@ -135,9 +143,4 @@ public class EditTaskServlet extends HttpServlet {
         return result;
     }
 
-    private void addAttributes(HttpServletRequest req) {
-        req.setAttribute(STATUSES, taskService.getAllStatuses());
-        req.setAttribute(PRIORITIES, taskService.getAllPriorities());
-        req.setAttribute(TAGS, tagService.getAll());
-    }
 }

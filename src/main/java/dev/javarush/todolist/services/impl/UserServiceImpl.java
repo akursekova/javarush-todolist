@@ -5,6 +5,7 @@ import dev.javarush.todolist.components.PasswordHashing;
 import dev.javarush.todolist.dto.UserDTO;
 import dev.javarush.todolist.exceptions.CreatingEntityException;
 import dev.javarush.todolist.exceptions.PasswordHashingException;
+import dev.javarush.todolist.exceptions.UserNotFoundException;
 import dev.javarush.todolist.mapper.UserMapper;
 import dev.javarush.todolist.middleware.Middleware;
 import dev.javarush.todolist.middleware.UserDataMiddleware;
@@ -59,8 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserByUsername(String username) {
+    public UserDTO getUserByUsername(String username) throws UserNotFoundException {
         User user = userRepository.findByUsername(username);
+
+        if (user == null){
+            throw new UserNotFoundException("user with given username doesn't exist. Please, sign up to proceed.");
+        }
+
         logger.info("User was found successfully");
         return userMapper.mapToDTO(user);
     }

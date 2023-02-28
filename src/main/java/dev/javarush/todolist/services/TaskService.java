@@ -21,4 +21,6 @@ public interface TaskService {
     void deleteTaskById(Long id);
 
     void updateTask(TaskCommand taskCommand, Long id);
+
+    void unrelateTagFromTasks(Long id);
 }

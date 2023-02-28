@@ -101,15 +101,18 @@
                 <div class="h-100 p-5 bg-light border rounded-3">
                     <h2>Open my ToDo List</h2>
                     <p>If you already have an account, you can open your ToDo List and start working on your tasks</p>
-                    <button class="btn btn-outline-secondary" type="button" onclick="location.href='table-task'" >
+                    <button class="btn btn-outline-dark" type="button" onclick="location.href='table-task'" >
                         Open my board
+                    </button>
+                    <button class="btn btn-outline-dark" type="button" onclick="location.href='user-sign-in'" >
+                        Log In
                     </button>
                 </div>
             </div>
         </div>
 
         <footer class="pt-3 mt-4 text-muted border-top">
-            &copy; 2022 Created by <a href="https://github.com/akupreychik">Anton Kupreychik</a>
+            &copy; 2023 Created by <a href="https://github.com/akursekova">Alina Kursekova</a>
         </footer>
     </div>
 </main>

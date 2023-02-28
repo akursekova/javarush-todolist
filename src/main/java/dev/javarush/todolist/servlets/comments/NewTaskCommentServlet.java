@@ -1,8 +1,10 @@
 package dev.javarush.todolist.servlets.comments;
 
 import dev.javarush.todolist.command.TaskCommentCommand;
+import dev.javarush.todolist.exceptions.UserNotFoundException;
 import dev.javarush.todolist.services.TaskCommentService;
 import dev.javarush.todolist.services.UserService;
+import lombok.SneakyThrows;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -28,6 +30,8 @@ public class NewTaskCommentServlet extends HttpServlet {
         userService = (UserService) context.getAttribute(USER_SERVICE);
     }
 
+
+    @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TaskCommentCommand taskCommentCommand = buildTaskCommentCommand(req);
@@ -35,7 +39,7 @@ public class NewTaskCommentServlet extends HttpServlet {
         resp.sendRedirect("/hibernate_project_war_exploded/task?id=" + taskCommentCommand.getTaskId());
     }
 
-    private TaskCommentCommand buildTaskCommentCommand(HttpServletRequest req) {
+    private TaskCommentCommand buildTaskCommentCommand(HttpServletRequest req) throws UserNotFoundException {
         return TaskCommentCommand.builder()
                 .comment(req.getParameter("comment"))
                 .taskId(Long.parseLong(req.getParameter("taskId")))

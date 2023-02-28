@@ -5,6 +5,7 @@ import dev.javarush.todolist.dto.TagDTO;
 import dev.javarush.todolist.mapper.TagMapper;
 import dev.javarush.todolist.model.Tag;
 import dev.javarush.todolist.repositories.TagRepository;
+import dev.javarush.todolist.repositories.TaskRepository;
 import dev.javarush.todolist.services.TagService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,7 @@ public class TagServiceImpl implements TagService {
     private final Logger logger = LogManager.getLogger(TagServiceImpl.class);
 
     private final TagRepository tagRepository;
+
     private final TagMapper tagMapper;
 
     public TagServiceImpl(TagRepository tagRepository) {
@@ -32,10 +34,22 @@ public class TagServiceImpl implements TagService {
         logger.info("Tag saved {}", tag);
     }
 
+
+    @Override
+    public TagDTO getTagById(Long id) {
+        return tagMapper.mapToDTO(tagRepository.findById(id));
+    }
+
     @Override
     public void delete(String name) {
         tagRepository.deleteByName(name);
         logger.info("Tag deleted {}", name);
+    }
+
+    @Override
+    public void deleteTagById(Long id) {
+
+        tagRepository.deleteTagById(id);
     }
 
     @Override

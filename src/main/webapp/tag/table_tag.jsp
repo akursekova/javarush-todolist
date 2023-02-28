@@ -30,10 +30,10 @@
                 <td>${tag.name}</td>
                 <td style="background-color:${tag.color}"></td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/tag/edit?id=${tag.id}">Edit</a>
+                    <a href="${pageContext.request.contextPath}/tag?id=${tag.id}&action=edit">Edit</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/tag/delete?id=${tag.id}">Delete</a>
+                    <a href="${pageContext.request.contextPath}/tag?id=${tag.id}&action=delete">Delete</a>
                 </td>
             </tr>
         </c:forEach>

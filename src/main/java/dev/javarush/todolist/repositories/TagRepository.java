@@ -2,6 +2,7 @@ package dev.javarush.todolist.repositories;
 
 import dev.javarush.todolist.command.TagCommand;
 import dev.javarush.todolist.model.Tag;
+import dev.javarush.todolist.model.Task;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -58,6 +59,18 @@ public class TagRepository {
         }
     }
 
+    public void deleteTagById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery("delete from Tag t where t.id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void update(Long tagId, TagCommand tagCommand) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -68,6 +81,14 @@ public class TagRepository {
             transaction.commit();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public Tag findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Tag.class, id);
+        } catch (Exception e) {
+            return null;
         }
     }
 

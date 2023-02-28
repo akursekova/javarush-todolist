@@ -13,13 +13,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Edit task</title>
+    <title>Edit task TEST</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 <c:if test="${task != null}">
-<form action="editTask" method="post">
+<%--<form action="editTask" method="post">--%>
+<form action="task" method="post">
     </c:if>
     <c:if test="${task == null}">
     <form action="new-task" method="post">
@@ -38,7 +39,7 @@
             <br>
 
 
-            <form action="editTask" method="post">
+            <form action="task" method="post">
                 <input type="hidden" name="id" value='${task.id}'/>
                 <div class="mb-3">
                     <label for="taskName" class="form-label">Name</label>
