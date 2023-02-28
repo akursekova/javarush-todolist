@@ -47,8 +47,8 @@ public class TableTaskServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TEST
         session = req.getSession(true);
-//        String currentUser = (String) session.getAttribute(USER_ATTRIBUTE);
-        String currentUser = "user01";
+        String currentUser = (String) session.getAttribute(USER_ATTRIBUTE);
+        //String currentUser = "user01";
         req.isRequestedSessionIdValid();
         //TEST
 
