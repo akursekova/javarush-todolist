@@ -1,17 +1,12 @@
 package dev.javarush.todolist.servlets.tag;
 
 import dev.javarush.todolist.command.TagCommand;
-import dev.javarush.todolist.command.TaskCommand;
 import dev.javarush.todolist.dto.TagDTO;
-import dev.javarush.todolist.dto.TaskDTO;
-import dev.javarush.todolist.enums.TaskPriority;
-import dev.javarush.todolist.enums.TaskStatus;
 import dev.javarush.todolist.enums.WebMethodsType;
 import dev.javarush.todolist.services.TagService;
 import dev.javarush.todolist.services.TaskCommentService;
 import dev.javarush.todolist.services.TaskService;
 import dev.javarush.todolist.services.UserService;
-import dev.javarush.todolist.services.impl.TaskServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,11 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static dev.javarush.todolist.consts.WebConstants.*;
 
@@ -84,22 +76,20 @@ public class TagServlet extends HttpServlet {
         logger.info("Current tag = " + tag.toString());
 
 
+
+
         TagCommand updatedTagCommand = buildTagCommand(req);
         tagService.update(tag.getName(), updatedTagCommand);
         //todo есть ли смысл передавать айди в updateTask,
         // если я могу засетить айди в таскКомманд
         // и потом замапить эту сущность на таску
-        resp.sendRedirect("/javarush_todolist_war_exploded/table-tag");
+        resp.sendRedirect(req.getContextPath() + "/table-tag");
     }
 
     private void deleteAction(HttpServletRequest req, HttpServletResponse resp, Long id, WebMethodsType method) throws ServletException, IOException {
-        if (method == WebMethodsType.DELETE) {
-            //todo удалить этот if
-            taskService.unrelateTagFromTasks(id);
+            taskService.unbindTagFromTasks(id);
             tagService.deleteTagById(id);
-            //req.getRequestDispatcher("/javarush_todolist_war_exploded/table_tag.jsp").forward(req, resp);
-            resp.sendRedirect("/javarush_todolist_war_exploded/table-tag");
-        }
+            resp.sendRedirect(req.getContextPath() + "/table-tag");
     }
 
     private TagCommand buildTagCommand(HttpServletRequest req) {

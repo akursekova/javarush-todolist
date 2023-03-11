@@ -34,7 +34,8 @@
 <%--    <script>--%>
 <%--        document.write('<a href="' + document.referrer + '">Go Back</a>');--%>
 <%--    </script>--%>
-    <button onclick="history.back()">Go Back</button>
+<%--    <button onclick="history.back()">Go Back</button>--%>
+    <button onclick="window.history.go(-1)">Go Back</button>
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@
     <form action="user-sign-in" method="post">
         <div class=" mb-3">
             <label for="exampleInputUsername" class="form-label">Username</label>
-            <input name="username" type="text" class="form-control" id="exampleInputUsername" placeholder="Anton"
+            <input name="username" type="text" class="form-control" id="exampleInputUsername" placeholder="username"
                    aria-label="Username"
                    aria-describedby="basic-addon1">
         </div>

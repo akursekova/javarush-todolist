@@ -59,7 +59,7 @@ public class UserSignIpServlet extends HttpServlet {
         logger.info("================================");
 
         putUsernameToCurrentSession(req, userCommand);
-        resp.sendRedirect("/javarush_todolist_war/table-task");
+        resp.sendRedirect(req.getContextPath() + "/table-task");
     }
 
     private UserCommand buildUserCommand(HttpServletRequest req) {
@@ -73,8 +73,8 @@ public class UserSignIpServlet extends HttpServlet {
     }
 
     private void putUsernameToCurrentSession(HttpServletRequest req, UserCommand userCommand) {
-        //HttpSession session = req.getSession();
-        //session.setAttribute(USER_ATTRIBUTE, userCommand.getUsername());
-        req.getSession().setAttribute(USER_ATTRIBUTE, userCommand.getUsername());
+        HttpSession session = req.getSession();
+        session.setAttribute(USER_ATTRIBUTE, userCommand.getUsername());
+        //req.getSession().setAttribute(USER_ATTRIBUTE, userCommand.getUsername());
     }
 }

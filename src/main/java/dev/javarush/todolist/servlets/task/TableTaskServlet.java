@@ -45,16 +45,10 @@ public class TableTaskServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TEST
-        session = req.getSession(true);
-        String currentUser = (String) session.getAttribute(USER_ATTRIBUTE);
+
         //String currentUser = "user01";
-        req.isRequestedSessionIdValid();
-        //TEST
 
-
-
-        //String currentUser = getUserNameFromSession(req);
+        String currentUser = getUserNameFromSession(req);
         logger.info("================================");
         logger.info(req.getSession().getCreationTime());
         logger.info(req.getSession().getId());
@@ -76,7 +70,8 @@ public class TableTaskServlet extends HttpServlet {
     private String getUserNameFromSession(HttpServletRequest req) {
         logger.info("================================");
         logger.info("getUserNameFromSession method");
-        logger.info(req.getSession());
+        logger.info(req.getSession().getCreationTime());
+        logger.info(req.getSession().getId());
         logger.info(req);
         logger.info("currentUser = " + (String) req.getSession().getAttribute(USER_ATTRIBUTE));
         logger.info("================================");

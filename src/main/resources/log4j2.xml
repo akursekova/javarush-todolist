@@ -29,6 +29,12 @@
         <Logger name="dev.javarush.todolist.servlets.task.NewTaskServlet" level="trace" additivity="false">
             <AppenderRef ref="LogToRollingFile"/>
         </Logger>
+        <Logger name="dev.javarush.todolist.servlets.tag.TagServlet" level="trace" additivity="false">
+            <AppenderRef ref="LogToRollingFile"/>
+        </Logger>
+        <Logger name="dev.javarush.todolist.services.impl.TaskServiceImpl" level="trace" additivity="false">
+            <AppenderRef ref="LogToRollingFile"/>
+        </Logger>
         <Root level="error">
             <AppenderRef ref="LogToConsole"/>
         </Root>

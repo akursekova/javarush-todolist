@@ -38,7 +38,7 @@ public class UserSignUpServlet extends HttpServlet {
         UserCommand userCommand = buildUserCommand(req);
         userService.createUser(userCommand);
         putUsernameToCurrentSession(req, userCommand);
-        resp.sendRedirect("/javarush_todolist_war/table-task");
+        resp.sendRedirect(req.getContextPath() + "/table-task");
     }
 
     private UserCommand buildUserCommand(HttpServletRequest req) {

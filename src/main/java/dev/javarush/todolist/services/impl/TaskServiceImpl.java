@@ -26,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private static final String ERROR_WHILE_SAVING_TASK = "Error while saving task";
 
     private final TaskRepository taskRepository;
+
     private final Middleware middleware;
     private final TaskMapper taskMapper;
 
@@ -40,12 +41,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void save(TaskCommand taskCommand) throws CreatingEntityException {
         try {
-            //if (middleware.check(taskCommand)) {
-                Task task = taskMapper.mapToEntity(taskCommand);
-                //addTagsToTask(taskCommand, task);
-                taskRepository.save(task);
-                logger.info(TASK_SAVED);
-            //}
+            if (middleware.check(taskCommand)) {
+            Task task = taskMapper.mapToEntity(taskCommand);
+            taskRepository.save(task);
+            logger.info(TASK_SAVED);
+            }
         } catch (Exception e) {
             logger.error(ERROR_WHILE_SAVING_TASK, e);
             throw new CreatingEntityException(ERROR_WHILE_SAVING_TASK, Task.class);
@@ -84,13 +84,10 @@ public class TaskServiceImpl implements TaskService {
     public void updateTask(TaskCommand taskCommand, Long id) {
         try {
             if (middleware.check(taskCommand)) {
-                Task task = taskMapper.mapToEntity(taskCommand);//todo id перетирается, поэтому я его сечу отдельно
+                Task task = taskMapper.mapToEntity(taskCommand);
                 task.setCreatedAt(taskRepository.findById(id).getCreatedAt());
                 task.setId(id);
-                logger.info("MY TASK = " + task.getId());
-
                 taskRepository.update(task);
-                //logger.info(TASK_UPDATED);
             }
         } catch (Exception e) {
             logger.error(ERROR_WHILE_SAVING_TASK, e);
@@ -99,12 +96,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void unrelateTagFromTasks(Long id) {
-        List<Task> tasks = taskRepository.findTasksByTagId(id);
+    public void unbindTagFromTasks(Long tagId) {
+        List<Integer> tasks = taskRepository.findTasksByTagId(tagId);
         for (int i = 0; i < tasks.size(); i++) {
-            logger.info("findTasksByTagId method: taskId = " + tasks.get(i).getId());
+            Long taskId = Long.valueOf(tasks.get(i));
+            taskRepository.unbindTagFromTask(taskId, tagId);
         }
-
     }
 
     private void addTagsToTask(TaskCommand taskCommand, Task task) {

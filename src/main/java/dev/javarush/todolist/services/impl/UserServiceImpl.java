@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordHashing passwordHashing;
     private final UserMapper userMapper;
     private final Middleware middleware;
-
     private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository, PasswordHashing passwordHashing) {

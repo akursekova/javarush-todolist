@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,7 +36,6 @@ import static dev.javarush.todolist.consts.WebConstants.USER_SERVICE;
 public class TaskServlet extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(TaskServlet.class);
-
     private TaskService taskService;
     private TaskCommentService taskCommentService;
 
@@ -55,18 +55,25 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("doGet started. id = " + req.getParameter("id"));
-
-
-        Long id = Long.parseLong(req.getParameter("id"));
-        TaskDTO task = taskService.getTaskById(id);
+        HttpSession session = req.getSession(true);
+        String referer = req.getHeader(REFERER);
+        TaskDTO task = null;
+        Long id = null;
 
         addAttributes(req);
+
+        if (referer.contains(NEW_TAG_SERVLET_VALUE)) {
+            String idValue = String.valueOf(session.getAttribute("id"));
+            id = Long.parseLong(idValue);
+            task = taskService.getTaskById(id);
+        } else {
+            id = Long.valueOf(req.getParameter("id"));
+            task = taskService.getTaskById(id);
+        }
+
+
         req.setAttribute("task", task);
-
-
-        logger.info("action = " + req.getParameter("action"));
-
+        session.setAttribute("task", task);
 
         if (req.getParameter("action") != null) {
             WebMethodsType method = WebMethodsType.valueOf(req.getParameter("action").toUpperCase());
@@ -79,13 +86,17 @@ public class TaskServlet extends HttpServlet {
                 req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
                 return;
             }
-        } else {
-            task.setComments(taskCommentService.findCommentsByTaskId(id));
-            req.setAttribute("task", task);
+        }
+//        else {
+//            req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
+//            return;
+//        }
+        if (session.getAttribute("action") != null) {
+            req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
+            return;
         }
         req.getRequestDispatcher("/task/info_task.jsp").forward(req, resp);
     }
-
 
 
     @SneakyThrows
@@ -93,23 +104,21 @@ public class TaskServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long currentTaskId = Long.valueOf(req.getParameter("id"));
         TaskDTO task = taskService.getTaskById(currentTaskId);
-        String username = "malina"; //forced username
+
+        String username = (String) req.getSession().getAttribute(USER_ATTRIBUTE);
 
         logger.info("current task = " + task.toString());
 
 
         TaskCommand updatedTaskCommand = buildTaskCommand(req, username);
         taskService.updateTask(updatedTaskCommand, Long.valueOf(req.getParameter("id")));
-        //todo есть ли смысл передавать айди в updateTask,
-        // если я могу засетить айди в таскКомманд
-        // и потом замапить эту сущность на таску
-        resp.sendRedirect("/javarush_todolist_war_exploded/table-task");
+        resp.sendRedirect(req.getContextPath() + "/table-task");
     }
 
     private void deleteAction(HttpServletRequest req, HttpServletResponse resp, Long id, WebMethodsType method) throws ServletException, IOException {
         if (method == WebMethodsType.DELETE) {
             taskService.deleteTaskById(id);
-            resp.sendRedirect("/javarush_todolist_war_exploded/table-task");
+            resp.sendRedirect(req.getContextPath() + "/table-task");
         }
     }
 

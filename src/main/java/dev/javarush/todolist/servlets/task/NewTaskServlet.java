@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,11 +48,6 @@ public class NewTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         addAttributes(req);
-
-        //TEST common JSP
-//        req.getRequestDispatcher("/task/new_task.jsp").forward(req, resp);
-
-
         req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
     }
 
@@ -59,23 +55,16 @@ public class NewTaskServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String username = (String) req.getSession().getAttribute("user");
-        //String username = "malina"; //forced username
+        String username = getUserNameFromSession(req);
+
+
         if (ObjectUtils.anyNull(username)) {
-            resp.sendRedirect("/javarush_todolist_war_exploded/login");
+            resp.sendRedirect(req.getContextPath() + "/login");
         }
         TaskCommand taskCommand = buildTaskCommand(req, username);
         taskService.save(taskCommand);
-        String currentUser = (String) req.getSession().getAttribute(USER_ATTRIBUTE);
 
-        logger.info("================================");
-        logger.info(req.getSession().getCreationTime());
-        logger.info(req.getSession().getId());
-        logger.info(req);
-        logger.info("currentUser = " + currentUser);
-        logger.info("================================");
-
-        resp.sendRedirect("/javarush_todolist_war_exploded/table-task");
+        resp.sendRedirect( req.getContextPath() + "/table-task");
     }
 
     private TaskCommand buildTaskCommand(HttpServletRequest req, String username) throws UserNotFoundException {
@@ -87,7 +76,7 @@ public class NewTaskServlet extends HttpServlet {
                 .userId(userService.getUserByUsername(username).getId())
                 .hours(Integer.parseInt(req.getParameter("taskHours")))
                 .text(req.getParameter("taskText"))
-                .tags(tagService.getTagsByIds(convertTagsIds(req.getParameterValues("taskTags")))) // todo падает когда раскомменчено. убрала тэги, пока я с ними не разберусь
+                .tags(tagService.getTagsByIds(convertTagsIds(req.getParameterValues("taskTags"))))
                 .build();
     }
 
@@ -106,5 +95,10 @@ public class NewTaskServlet extends HttpServlet {
         req.setAttribute(STATUSES, taskService.getAllStatuses());
         req.setAttribute(PRIORITIES, taskService.getAllPriorities());
         req.setAttribute(TAGS, tagService.getAll());
+    }
+
+
+    private String getUserNameFromSession(HttpServletRequest req) {
+        return (String) req.getSession().getAttribute(USER_ATTRIBUTE);
     }
 }

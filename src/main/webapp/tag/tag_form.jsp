@@ -9,13 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Add new tag TEST</title>
+    <title>Tag</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 <c:if test="${tag != null}">
-    <%--<form action="editTask" method="post">--%>
 <form action="tag" method="post">
     </c:if>
     <c:if test="${tag == null}">
@@ -36,6 +35,7 @@
 
     <form action="tag" method="post">
         <input type="hidden" name="id" value='${tag.id}'/>
+
         <div class="form-group">
             <label for="tagName" class="form-label">Tag name</label>
             <input type="text" class="form-control" id="tagName" name="tagName" placeholder="Enter tag name"
@@ -62,7 +62,11 @@
 <%--    <script>--%>
 <%--        document.write('<a href="' + document.referrer + '">Go Back</a>');--%>
 <%--    </script>--%>
-    <button onclick="history.back()">Go Back</button>
+<%--    <button onclick="window.history.back()">Go Back</button>--%>
+<%--    <button onclick="location.href='task'">Go Back</button>--%>
+<%--    <button onclick="window.history.go(-1)">Go back</button>--%>
+    <button type="button" class="btn btn-primary" onclick="window.history.back()">Go Back</button>
+
 </div>
 </body>
 </html>

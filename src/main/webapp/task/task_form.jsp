@@ -13,13 +13,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Edit task TEST</title>
+    <title>Task</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+
 <c:if test="${task != null}">
-<%--<form action="editTask" method="post">--%>
 <form action="task" method="post">
     </c:if>
     <c:if test="${task == null}">
@@ -29,13 +29,23 @@
             <br>
             <h1>
                 <c:if test="${task != null}">
+
+                    <%
+                        TaskDTO taskDTO = (TaskDTO) session.getAttribute("task");
+                        String taskId = taskDTO.getId().toString();
+                        session.setAttribute("action", "edit");
+                        session.setAttribute("id", taskId);
+                        String sessionTaskId = session.getAttribute("id").toString();
+                    %>
+
                     Edit Task
+
                 </c:if>
                 <c:if test="${task == null}">
                     Add New Task
+                    <%session.setAttribute("action", "new");%>
                 </c:if>
             </h1>
-
             <br>
 
 
@@ -124,9 +134,7 @@
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-            <script>
-                document.write('<a href="' + document.referrer + '">Go Back</a>');
-            </script>
+            <button type="button" class="btn btn-primary" onclick="location.href='table-task'">Go Back</button>
         </div>
 
 </body>

@@ -1,8 +1,6 @@
 package dev.javarush.todolist.repositories;
 
-import dev.javarush.todolist.dto.TaskDTO;
 import dev.javarush.todolist.model.Task;
-import jakarta.persistence.PreRemove;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -51,12 +49,17 @@ public class TaskRepository {
         }
     }
 
-    @PreRemove
-    public void deleteTagFromTask(Long id) {
+
+    //todo to delete this method?
+    public void unbindTagFromTask(Long taskId, Long tagId) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.createQuery("delete from Task t where t.id = :id")
-                    .setParameter("id", id)
+//            session.createQuery("delete from Task t where t.id = :id")
+//                    .setParameter("id", id)
+//                    .executeUpdate();
+            session.createNativeQuery("DELETE FROM task_tag WHERE task_id = :taskId and tag_id = :tagId")
+                    .setParameter("taskId", taskId)
+                    .setParameter("tagId", tagId)
                     .executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -102,10 +105,10 @@ public class TaskRepository {
         }
     }
 
-    public List<Task> findTasksByTagId(Long id) {
+    public List<Integer> findTasksByTagId(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            NativeQuery<Task> query = session.createNativeQuery("select task_id from task_tag where tag_id = 1205", Task.class);
-            //query.setParameter("id", id);
+            NativeQuery<Integer> query = session.createNativeQuery("select task_id from task_tag where tag_id = :id", Integer.class);
+            query.setParameter("id", id);
             return query.getResultList();
         } catch (Exception e) {
             return List.of();

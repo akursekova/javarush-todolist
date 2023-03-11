@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,19 +38,25 @@ public class NewTagServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
         req.getRequestDispatcher("/tag/tag_form.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+        HttpSession session = req.getSession();
         TagCommand tagCommand = buildTagCommand(req);
         tagService.save(tagCommand);
-//        resp.sendRedirect("/hibernate_project_war_exploded/table-tag");
-        //todo ВРЕМЕННОЕ РЕШЕНИЕ:
-        // после объединение сервлетов поменять на единый,
-        // а сейчас временно перевод на новую таску.
-        // Для Эдит работать не будет
-        resp.sendRedirect("/javarush_todolist_war/new-task");
+
+
+        req.setAttribute("id", session.getAttribute("id"));
+
+        if (session.getAttribute("action").equals("new")) {
+            resp.sendRedirect(req.getContextPath() + "/new-task");
+        } else {
+            req.setAttribute("action", session.getAttribute("action"));
+            resp.sendRedirect(req.getContextPath() + "/task");
+        }
     }
 
     private TagCommand buildTagCommand(HttpServletRequest req) {
