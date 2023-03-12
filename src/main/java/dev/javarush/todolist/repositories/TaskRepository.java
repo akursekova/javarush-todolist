@@ -50,13 +50,9 @@ public class TaskRepository {
     }
 
 
-    //todo to delete this method?
     public void unbindTagFromTask(Long taskId, Long tagId) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-//            session.createQuery("delete from Task t where t.id = :id")
-//                    .setParameter("id", id)
-//                    .executeUpdate();
             session.createNativeQuery("DELETE FROM task_tag WHERE task_id = :taskId and tag_id = :tagId")
                     .setParameter("taskId", taskId)
                     .setParameter("tagId", tagId)

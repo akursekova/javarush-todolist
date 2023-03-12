@@ -21,6 +21,11 @@
         </div>
     </div>
     <br>
+
+    <%
+        session.setAttribute("action", null);
+    %>
+
     <table class="table">
         <thead class="table-dark">
         <tr>

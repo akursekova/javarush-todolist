@@ -38,6 +38,8 @@ public class AppContextListener implements ServletContextListener {
         PasswordHashing passwordHashing = new PasswordHashing();
         SessionProvider sessionProvider = new Provider();
 
+
+
         UserRepository userRepository = new UserRepository(sessionProvider.getSessionFactory());
         TaskRepository taskRepository = new TaskRepository(sessionProvider.getSessionFactory());
         TagRepository tagRepository = new TagRepository(sessionProvider.getSessionFactory());

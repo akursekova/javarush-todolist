@@ -75,6 +75,10 @@ public class TaskServlet extends HttpServlet {
         req.setAttribute("task", task);
         session.setAttribute("task", task);
 
+        System.out.println("DoGet task = " + req.getParameter("task"));
+        System.out.println("DoGet task = " + req.getAttribute("task"));
+        System.out.println("DoGet task = " + session.getAttribute("action"));
+
         if (req.getParameter("action") != null) {
             WebMethodsType method = WebMethodsType.valueOf(req.getParameter("action").toUpperCase());
 
@@ -87,10 +91,6 @@ public class TaskServlet extends HttpServlet {
                 return;
             }
         }
-//        else {
-//            req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
-//            return;
-//        }
         if (session.getAttribute("action") != null) {
             req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
             return;
@@ -102,13 +102,16 @@ public class TaskServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+       HttpSession session = req.getSession();
+
+        System.out.println(session.getAttribute("action"));
+
         Long currentTaskId = Long.valueOf(req.getParameter("id"));
         TaskDTO task = taskService.getTaskById(currentTaskId);
 
         String username = (String) req.getSession().getAttribute(USER_ATTRIBUTE);
 
         logger.info("current task = " + task.toString());
-
 
         TaskCommand updatedTaskCommand = buildTaskCommand(req, username);
         taskService.updateTask(updatedTaskCommand, Long.valueOf(req.getParameter("id")));
@@ -137,7 +140,7 @@ public class TaskServlet extends HttpServlet {
                 .userId(userService.getUserByUsername(username).getId())
                 .hours(Integer.parseInt(req.getParameter("taskHours")))
                 .text(req.getParameter("taskText"))
-                .tags(tagService.getTagsByIds(convertTagsIds(req.getParameterValues("taskTags")))) // todo падает когда раскомменчено. убрала тэги, пока я с ними не разберусь
+                .tags(tagService.getTagsByIds(convertTagsIds(req.getParameterValues("taskTags"))))
                 .build();
     }
 

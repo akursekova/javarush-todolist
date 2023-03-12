@@ -80,9 +80,6 @@ public class TagServlet extends HttpServlet {
 
         TagCommand updatedTagCommand = buildTagCommand(req);
         tagService.update(tag.getName(), updatedTagCommand);
-        //todo есть ли смысл передавать айди в updateTask,
-        // если я могу засетить айди в таскКомманд
-        // и потом замапить эту сущность на таску
         resp.sendRedirect(req.getContextPath() + "/table-tag");
     }
 

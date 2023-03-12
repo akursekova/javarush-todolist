@@ -20,21 +20,21 @@
     <form action="user-sign-up" method="post">
         <div class=" mb-3">
             <label for="exampleInputUsername" class="form-label">Username</label>
-            <input name="username" type="text" class="form-control" id="exampleInputUsername" placeholder="Anton"
+            <input name="username" type="text" class="form-control" id="exampleInputUsername" placeholder="Alina"
                    aria-label="Username"
                    aria-describedby="basic-addon1">
         </div>
 
         <div class="mb-3">
             <label for="exampleInputFirstName" class="form-label">First name</label>
-            <input name="firstName" type="text" id="exampleInputFirstName" class="form-control" placeholder="Anton"
+            <input name="firstName" type="text" id="exampleInputFirstName" class="form-control" placeholder="Alina"
                    aria-label="First name"
                    aria-describedby="basic-addon1">
         </div>
 
         <div class="mb-3">
             <label for="exampleInputLastName" class="form-label">Last name</label>
-            <input name=lastName type="text" id="exampleInputLastName" class="form-control" placeholder="Kupreychik"
+            <input name=lastName type="text" id="exampleInputLastName" class="form-control" placeholder="Kursekova"
                    aria-label="Last name"
                    aria-describedby="basic-addon1">
         </div>

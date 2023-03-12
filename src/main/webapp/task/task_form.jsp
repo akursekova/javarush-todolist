@@ -30,6 +30,8 @@
             <h1>
                 <c:if test="${task != null}">
 
+                    Edit Task
+
                     <%
                         TaskDTO taskDTO = (TaskDTO) session.getAttribute("task");
                         String taskId = taskDTO.getId().toString();
@@ -38,7 +40,6 @@
                         String sessionTaskId = session.getAttribute("id").toString();
                     %>
 
-                    Edit Task
 
                 </c:if>
                 <c:if test="${task == null}">
@@ -112,10 +113,10 @@
 
                 </div>
 
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Add file</label>
-                    <input class="form-control" type="file" id="formFile">
-                </div>
+                <%--                <div class="mb-3">--%>
+                <%--                    <label for="formFile" class="form-label">Add file</label>--%>
+                <%--                    <input class="form-control" type="file" id="formFile">--%>
+                <%--                </div>--%>
 
                 <div class="mb-3">
                     <label class="select-tags">Choose tags</label>

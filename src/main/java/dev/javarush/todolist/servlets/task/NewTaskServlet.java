@@ -47,7 +47,11 @@ public class NewTaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+
         addAttributes(req);
+
+        session.setAttribute("task", null);
         req.getRequestDispatcher("/task/task_form.jsp").forward(req, resp);
     }
 
@@ -57,13 +61,13 @@ public class NewTaskServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String username = getUserNameFromSession(req);
 
-
         if (ObjectUtils.anyNull(username)) {
             resp.sendRedirect(req.getContextPath() + "/login");
         }
         TaskCommand taskCommand = buildTaskCommand(req, username);
         taskService.save(taskCommand);
-
+        System.out.println("new task servlet task = " + req.getParameter("task"));
+        System.out.println("new task servlet task = " + req.getAttribute("task"));
         resp.sendRedirect( req.getContextPath() + "/table-task");
     }
 
