@@ -1,12 +1,26 @@
-version: '3.8'
+version: '3.7'
+
+# Define services
 services:
+  # App backend service
+  app-server:
+    # Configuration for building the docker image for the backend service
+    build:
+      context: . # Use an image built from the specified dockerfile in the `springboot-app-server` directory.
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Forward the exposed port 4000 on the container to port 4000 on the host machine
+    restart: always
+    depends_on:
+      - db # This service depends on mysql. Start that first.
+
+
+  # Database Service (Mysql)
   db:
-    image: postgres:13
+    image: postgres
+    ports:
+      - "5432:5432"
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=qwerty
-    ports:
-      - '5432:5432'
-    volumes:
-      - db:/var/lib/postgresql/data

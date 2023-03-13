@@ -55,8 +55,8 @@ Tag will be deleted by clicking **[Delete]** button.
 - Run the command % mvn clean install: in generated target folder will be found javarush-todolist.war
 - Make sure that the current directory is javarush-todolist-dev
 - $docker build -t javarush-todolist-dev .
-- $docker run -p 7777:8080 javarush-todolist-dev
-- http://localhost:7777/javarush_todolist_war
+- $docker run -p 8080:8080 javarush-todolist-dev
+- http://localhost:8080/javarush_todolist_war
 
 ## Structure of the project
 This is a Maven project with standard Maven project structure:
@@ -66,16 +66,26 @@ This is a Maven project with standard Maven project structure:
 `src/test` — package to store tests
 `pom.xml` is in the root of the project and contains all necessary dependencies for the correct work of the project.
 
+This application has 3 main domains: 
+- Task
+- Tag
+- User, which are located in the `model` package.
 
 In the root folder of the project `dev.javarush.todolist` there are packages:
 
-`command`: responsible for data transportation in necessary format  
-`components`: contains classes of main entities of the trading platform  
-`consts`: contains classes responsible for error handling  
-`dto`: contains classes responsible for adding entities to the repositories  
-`enums`: this is the level between servlet and repository. Classes inside the service package are responsible for business logic  
-`exceptions`: package with servlets for each entity
-
+`command`: transfers main classes mentioned above to the entities which will be used on service and servlet levels  
+`components`: contains class _PasswordHashing_ intended for hashing user passwords
+`consts`: contains class _WebConstants_ which stores constants used in the application  
+`dto`: transfers main classes mentioned above to the entities which will be used on service and servlet levels  
+`enums`: contains all the enums used in the application  
+`exceptions`: stores all the exceptions  
+`listener`: contains AppContextListener class, where all necessary entities are initialized before application starts  
+`mapper`: class which helps to transfer main classes mentioned above to the entities which will be used on service and servlet levels  
+`middleware`: contains classes which intended for validation of the data which comes from the User Interface  
+`provider`: contains class _Provider_ which contains database properties  
+`repositories`: stores classes intended to manage entities in the database: save, update, delete.  
+`services`: stores classes which implements business logic, intended to manage entities between servlet and repository level  
+`servlets`: stores servlet classes
 
 There is a `web.xml` inside `WEB-INF`: it stores the information about configuration of the app.  
 In current project it stores information about ExceptionHandlerServlet, which is responsible for error handling.
