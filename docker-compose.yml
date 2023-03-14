@@ -8,6 +8,7 @@ services:
     build:
       context: . # Use an image built from the specified dockerfile in the `springboot-app-server` directory.
       dockerfile: Dockerfile
+    network_mode: "host"
     ports:
       - "8080:8080" # Forward the exposed port 4000 on the container to port 4000 on the host machine
     restart: always

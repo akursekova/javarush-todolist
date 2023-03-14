@@ -54,9 +54,8 @@ Tag will be deleted by clicking **[Delete]** button.
 - Open Terminal in IntelliJ IDEA
 - Run the command % mvn clean install: in generated target folder will be found javarush-todolist.war
 - Make sure that the current directory is javarush-todolist-dev
-- $docker build -t javarush-todolist-dev .
-- $docker run -p 8080:8080 javarush-todolist-dev
-- http://localhost:8080/javarush_todolist_war
+- $docker-compose up -d
+- http://localhost:8080/javarush-todolist
 
 ## Structure of the project
 This is a Maven project with standard Maven project structure:
@@ -89,3 +88,18 @@ In the root folder of the project `dev.javarush.todolist` there are packages:
 
 There is a `web.xml` inside `WEB-INF`: it stores the information about configuration of the app.  
 In current project it stores information about ExceptionHandlerServlet, which is responsible for error handling.
+
+In the `webapp` package which is the root of the project there are following packages:  
+`tag`: contains .jsp files which represent tag creation/modification form, table with all tags  
+`task`: contains .jsp files which represent task creation/modification form, table with all task, task information form  
+`user`: contains .jsp files which represent sign up and sign in pages  
+In the root of the `webapp` package there is an index.jsp, which represent the start page of the application
+
+## Logging
+In this project is used Log4j. Logger configuration is in xml format.
+
+Configuration is stored by path: `src/main/resources/log4j2.xml`.
+
+Logs can be recorded to the file on your local computer.
+
+_If this application will be run on your computer, please provide a path to the local folder on your computer for correct work of the application._
