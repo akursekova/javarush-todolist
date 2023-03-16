@@ -38,7 +38,6 @@ public class NewTagServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
         req.getRequestDispatcher("/tag/tag_form.jsp").forward(req, resp);
     }
 
@@ -47,7 +46,6 @@ public class NewTagServlet extends HttpServlet {
         HttpSession session = req.getSession();
         TagCommand tagCommand = buildTagCommand(req);
         tagService.save(tagCommand);
-
 
         req.setAttribute("id", session.getAttribute("id"));
 

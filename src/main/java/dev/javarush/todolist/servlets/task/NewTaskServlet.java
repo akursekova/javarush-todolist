@@ -66,9 +66,7 @@ public class NewTaskServlet extends HttpServlet {
         }
         TaskCommand taskCommand = buildTaskCommand(req, username);
         taskService.save(taskCommand);
-        System.out.println("new task servlet task = " + req.getParameter("task"));
-        System.out.println("new task servlet task = " + req.getAttribute("task"));
-        resp.sendRedirect( req.getContextPath() + "/table-task");
+        resp.sendRedirect(req.getContextPath() + "/table-task");
     }
 
     private TaskCommand buildTaskCommand(HttpServletRequest req, String username) throws UserNotFoundException {

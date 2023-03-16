@@ -20,53 +20,54 @@
     <c:if test="${tag == null}">
     <form action="new-tag" method="post">
         </c:if>
-<div class="container">
-    <br>
-    <h1>
-        <c:if test="${tag != null}">
-            Edit Tag
-        </c:if>
-        <c:if test="${tag == null}">
-            Add New Tag
-        </c:if>
-    </h1>
-
-    <br>
-
-    <form action="tag" method="post">
-        <input type="hidden" name="id" value='${tag.id}'/>
-
-        <div class="form-group">
-            <label for="tagName" class="form-label">Tag name</label>
-            <input type="text" class="form-control" id="tagName" name="tagName" placeholder="Enter tag name"
-                   value="<c:out value='${tag.name}' />">
+        <div class="container">
             <br>
-            <label class="form-label" for="favcolor">Select your color:</label>
-            <br>
-            <input type="color" id="favcolor" name="favcolor"
 
-            <c:if test="${tag != null}">
-                   value=${tag.color}
-            </c:if>
-            <c:if test="${tag == null}">value="#ff0000"
-            </c:if>
-
-            >
+            <h1>
+                <c:if test="${tag != null}">
+                    Edit Tag
+                </c:if>
+                <c:if test="${tag == null}">
+                    Add New Tag
+                </c:if>
+            </h1>
 
             <br>
-            <br>
-            <button type="submit" class="btn btn-success">Submit</button>
+
+            <form action="tag" method="post">
+                <input type="hidden" name="id" value='${tag.id}'/>
+
+                <div class="form-group">
+                    <label for="tagName" class="form-label">Tag name</label>
+                    <input type="text" class="form-control" id="tagName" name="tagName" placeholder="Enter tag name"
+                           value="<c:out value='${tag.name}' />">
+                    <br>
+                    <label class="form-label" for="favcolor">Select your color:</label>
+                    <br>
+                    <input type="color" id="favcolor" name="favcolor"
+
+                    <c:if test="${tag != null}">
+                           value=${tag.color}
+                           </c:if>
+                                   <c:if test="${tag == null}">value="#ff0000"
+                    </c:if>>
+
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary" onclick="location.href='table-tag'">All tags</button>
+
+            <c:choose>
+                <c:when test="${action == 'new'}">
+                    <button type="button" class="btn btn-primary" onclick="location.href='new-task'">Go Back</button>
+                </c:when>
+                <c:otherwise>
+                    <button type="button" class="btn btn-primary" onclick="location.href='task'">Go Back</button>
+                </c:otherwise>
+            </c:choose>
+
         </div>
-    </form>
-    <button type="button" class="btn btn-primary" onclick="location.href='table-tag'">All tags</button>
-<%--    <script>--%>
-<%--        document.write('<a href="' + document.referrer + '">Go Back</a>');--%>
-<%--    </script>--%>
-<%--    <button onclick="window.history.back()">Go Back</button>--%>
-<%--    <button onclick="location.href='task'">Go Back</button>--%>
-<%--    <button onclick="window.history.go(-1)">Go back</button>--%>
-    <button type="button" class="btn btn-primary" onclick="window.history.back()">Go Back</button>
-
-</div>
 </body>
 </html>

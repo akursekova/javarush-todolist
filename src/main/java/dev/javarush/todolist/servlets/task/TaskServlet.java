@@ -71,13 +71,8 @@ public class TaskServlet extends HttpServlet {
             task = taskService.getTaskById(id);
         }
 
-
         req.setAttribute("task", task);
         session.setAttribute("task", task);
-
-        System.out.println("DoGet task = " + req.getParameter("task"));
-        System.out.println("DoGet task = " + req.getAttribute("task"));
-        System.out.println("DoGet task = " + session.getAttribute("action"));
 
         if (req.getParameter("action") != null) {
             WebMethodsType method = WebMethodsType.valueOf(req.getParameter("action").toUpperCase());
@@ -102,9 +97,7 @@ public class TaskServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       HttpSession session = req.getSession();
-
-        System.out.println(session.getAttribute("action"));
+        HttpSession session = req.getSession();
 
         Long currentTaskId = Long.valueOf(req.getParameter("id"));
         TaskDTO task = taskService.getTaskById(currentTaskId);
