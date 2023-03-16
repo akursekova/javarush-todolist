@@ -48,7 +48,7 @@ Tag will be deleted by clicking **[Delete]** button.
 # Run application from Docker:
 
 - Install [Docker](https://docs.docker.com/install)
-- Open the link https://github.com/akursekova/javarush-todolist/tree/dev and click on Donwnload ZIP
+- Open the link https://github.com/akursekova/javarush-todolist/tree/dev and click on Download ZIP
 - The name of downloaded project will be javarush-todolist-dev since it was downloaded from the dev branch
 - Open project in IntelliJ IDEA
 - Open Terminal in IntelliJ IDEA
