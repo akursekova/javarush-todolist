@@ -70,6 +70,10 @@ This application has 3 main domains:
 - Tag
 - User, which are located in the `model` package.
 
+
+_Please note that the project also has Comment.class which is supposed for leaving comments.  
+But I didn't do implementation of the comment logic, but neither deleted related classes, because I have intention to continue to develop this project._ 
+
 In the root folder of the project `dev.javarush.todolist` there are packages:
 
 `command`: transfers main classes mentioned above to the entities which will be used on service and servlet levels  
